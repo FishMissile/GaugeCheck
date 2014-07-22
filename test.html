@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Grade Calculator</title>
+        <style type="text/css">
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+            }
+            form {
+                width: 300px;
+                margin: 0 auto;
+                text-align: right;
+            }
+            .h-line {
+                background-color: black;
+                margin: 2px auto;
+                width: 100%;
+                height: 2px;
+            }
+            input {
+                text-align: right;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Grade Calculator</h1>
+        <p>Enter only whole numbers.</p>
+        <form name="Grade Calculator" id="form">
+            <p>
+                <label for="test1">Test #1 Grade:</label>
+                <input type="text" id="test1" value="" name="Test #1" size="3"
+                maxlength="3">
+            </p>
+            <p>
+                <label for="test2">Test #2 Grade:</label>
+                <input type="text" id="test2" value="" name="Test #2" size="3"
+                maxlength="3">
+            </p>
+            <p>
+                <label for="final">Final Exam Grade:</label>
+                <input type="text" id="final" value="" name="Final Exam Grade"
+                        size="3" maxlength="3">
+            </p>
+            <p>
+                <label for="quiz">Quiz Grade:</label>
+                <input type="text" id="quiz" value="" name="Quiz Grade"
+                        size="3" maxlength="3">
+            </p>
+            <p>
+                <label for="project">Project Grade:</label>
+                <input type="text" id="project" value="" name="Project Grade" 
+                        size="3" maxlength="3">
+            </p>
+            <p>
+                <label for="lab">Lab Grade:</label>
+                <input type="text" id="lab" value="" name="Lab Grade" size="3"
+                        maxlength="3">
+            </p>
+            <p class="h-line"></p>
+            <p>
+                <label for="final-grade">Final Grade (Letter Grade):</label>
+                <input type="text" name="Final Grade" id="final-grade" value="" 
+                        size="7" readonly="readonly" tabindex="-1">
+            </p>
+            <p>
+                <input type="button" value="Calculate" onclick="calcGrade();">
+                <input type="reset" value="Reset">
+            </p>
+        </form>
+    <script type="text/javascript">
+        function calcGrade() {
+            var form = document.getElementById("form");
+            var finalGrade = document.getElementById("final-grade");
+            var input;
+            var i = 6;
+            var grade = [];
+            
+            /* 
+                grade array index key:
+               
+                0 = Test 1 
+                1 = Test 2
+                2 = Final Exam
+                3 = Quizzes
+                4 = Lab Grade
+                5 = Project
+                6 = Final Grade
+
+                    Only whole numbers allowed and no values above 100 or below
+                0 accepted. Any input value over 100 will be reset to 100. Any
+                input value below 0 will be reset to 0. 
+
+                    Because parseInt() is used, any number to the right of the
+                decimal point is ignored. The program will update the input 
+                fields to show that the tenth's place was dropped.
+
+                    To reduce confusion, the user is told to enter only whole
+                numbers and the final grade number is rounded.
+            */ 
+
+            while (i--) {
+                input = form.elements[i].value;
+                if (parseInt(input, 10)) {
+                    input = parseInt(input, 10);
+                    form.elements[i].value = input;
+                    if (input <= 100 && input >= 0) {
+                        grade[i] = input;
+                    } else {
+                        if (input > 100) {
+                            grade[i] = 100;
+                            form.elements[i].value = "100";
+                        } else {
+                            if (input < 0) {
+                                grade[i] = 0;
+                                form.elements[i].value = "0";
+                            }
+                        }
+                    }
+                } else {
+                    grade[i] = 0;
+                    form.elements[i].value = "0";
+                }    
+            }
+
+            grade[6] = Math.round((grade[0] * 0.2) + (grade[1] * 0.2) + 
+                    (grade[2] * 0.2) + (grade[3] * 0.1) + (grade[4] * 0.2) +
+                    (grade[5] * 0.1));
+
+            if (grade[6] < 60) {
+                finalGrade.value = (grade[6] + " (F)");
+                return;
+            }
+            if (grade[6] >= 60 && grade[6] < 70) {
+                finalGrade.value = (grade[6] + " (D)");
+                return;
+            }
+            if (grade[6] >= 70 && grade[6] < 80) {
+                finalGrade.value = (grade[6] + " (C)");
+                return;
+            }
+            if (grade[6] >= 80 && grade[6] < 90) {
+                finalGrade.value = (grade[6] + " (B)");
+                return;
+            }
+            if (grade[6] >= 90) {
+                finalGrade.value = (grade[6] + " (A)");
+            }  
+        }
+    </script>
+    </body>
+</html>

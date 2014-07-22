@@ -11,20 +11,33 @@
 <SCRIPT LANGUAGE="JavaScript">
 function testResults (form) {
     var TestVar = form.inputbox.value;
-    console.log(TestVar);
+	var tokens = TestVar.replace(/(\r\n|\n|\r)/gm, ",");
+	var theList = tokens.split(",");
+	var Sum = 0;
+	var len = theList.length;
+for (var x = 0; x < len; x++){
+Sum = (Sum += parseInt(theList[x], 10));
+}
+var average = eval(theList.join('+')) / len
+var total = eval(theList.join('+'))
+var high = Math.max.apply(null, theList) * 1000;
+var low = Math.min.apply(null, theList) * 1000;
+document.getElementById("hi").innerHTML = high;
+document.getElementById("lo").innerHTML = low;
+document.getElementById("tot").innerHTML = total.toFixed(6) * 1000;
+document.getElementById("avg").innerHTML = average.toFixed(7) * 1000;
 }
 </SCRIPT>
 </HEAD>
 <BODY>
-<FORM NAME="myform" ACTION="" METHOD="GET">Enter something in the box: <BR>
-<textarea name="inputbox" rows="10" cols="30">
-test
-test
-test
-</textarea><P>
+<FORM NAME="myform" ACTION="" METHOD="GET">Gauge check: Every 2 inches! <BR>
+<textarea name="inputbox" rows="10" cols="30"></textarea><P>
 <INPUT TYPE="button" NAME="button" Value="Click" onClick="testResults(this.form)">
 </FORM>
-
+Highest:<p id="hi">Hello World!</p>
+Lowest:<p id="lo">Hello World!</p>
+Total:<p id="tot">Hello World!</p>
+Average:<p id="avg">Hello World!</p>
 
 <P><BR><BR>
 </P>
